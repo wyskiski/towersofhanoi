@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const initialPegState = [
+    ["sml", "md", "lg"],
+    ["", "", ""],
+    ["", "", ""],
+  ];
+  const [selectedRing, setSelectedRing] = useState(null);
+  const [pegs, setPegs] = useState(initialPegState);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {pegs.map((peg, index) => {
+        return (
+          <div className="peg" key={`peg${index}`}>
+            {peg.map((slot, index) => {
+              return (
+                <div className="slot" key={`slot${index}`}>
+                  {slot !== "" && <div className={`ring ${slot}`}></div>}
+                </div>
+              );
+            })}
+            <div className="platform"></div>
+          </div>
+        );
+      })}
     </div>
   );
 }
