@@ -31,16 +31,17 @@
 }
 
 .ring {
+  z-index: 10;
   height: 20px;
   width: 200px;
   background-color: green;
   flex-shrink: 0;
 }
 
-.sml {
+.r1 {
   width: 100px;
 }
 
-.lg {
+.r3 {
   width: 300px;
 }
