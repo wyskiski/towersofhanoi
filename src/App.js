@@ -12,25 +12,38 @@ function App() {
   const [pegState, setPegState] = useState(initialPegState);
   const [updatedRing, setUpdatedRing] = useState(false);
 
-  const handleRingClick = (slot, event) => {
+  const handleRingClick = (index, slot, event) => {
     event.stopPropagation();
+
+    // if (index === 0) {
     console.log(slot);
     setSelectedRing(slot);
+    // }
   };
 
-  const handlePegClick = (index) => {
+  const handlePegClick = (pegIndex) => {
     if (updatedRing) {
-      console.log("IN");
-      let updatedPegs = [...pegState];
+      const targetPeg = pegState[pegIndex];
 
-      const newPegs = updatedPegs.map((peg) => {
-        console.log(peg);
-        return peg.map((slot) => {
-          return slot === selectedRing ? "" : slot;
+      const lastRingIndex = targetPeg.findIndex((slot) => slot !== "");
+      const lastRing = lastRingIndex !== -1 ? targetPeg[lastRingIndex] : null;
+
+      if (!lastRing || selectedRing < lastRing) {
+        let updatedPegs = pegState.map((peg, index) => {
+          return peg.map((slot) => {
+            return slot === selectedRing ? "" : slot;
+          });
         });
-      });
-      console.log("OUT");
-      console.log(newPegs);
+
+        const targetPeg = updatedPegs[pegIndex];
+        const emptyIndex = targetPeg.lastIndexOf("");
+        if (emptyIndex !== -1) {
+          targetPeg[emptyIndex] = selectedRing;
+        }
+
+        setSelectedRing(null);
+        setPegState(updatedPegs);
+      }
     }
   };
 
@@ -55,7 +68,9 @@ function App() {
                   {slot !== "" && (
                     <div
                       className={`ring ${slot}`}
-                      onClick={(event) => handleRingClick(slot, event)}></div>
+                      onClick={(event) =>
+                        handleRingClick(index, slot, event)
+                      }></div>
                   )}
                 </div>
               );
